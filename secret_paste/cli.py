@@ -38,14 +38,14 @@ end run
     )
     if completed.returncode != 0:
         raise SystemExit("Secret entry canceled or GUI prompt failed.")
-    return completed.stdout
+    return completed.stdout.rstrip("\r\n")
 
 
 def read_secret(prompt: str = DEFAULT_PROMPT, *, gui: bool = True) -> str:
-    secret = read_secret_from_gui(prompt) if gui else read_secret_from_terminal(prompt)
+    secret = (read_secret_from_gui(prompt) if gui else read_secret_from_terminal(prompt)).strip()
     if not secret:
         raise SystemExit("No secret received.")
-    return secret.rstrip("\r\n")
+    return secret
 
 
 def run_with_secret(args: argparse.Namespace) -> int:
